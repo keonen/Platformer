@@ -7,17 +7,36 @@ public class PlayerMovement : MonoBehaviour {
 	public float MaxJumpTime = 2f;
 	private float move = 0f;
 	public float JumpForce = 2f; 
-	private float JumpTime = 0f;
+	public float JumpTime = 0f;
 	private bool CanJump;
+	private bool playerOnTheGround;
 
+	void OnCollisionStay2D (Collision2D col)
+	{
+		if(col.gameObject.tag == "Ground")
+		{
+			playerOnTheGround = true;
+			Debug.Log ("Pelaaja osuu maahan!");
+		}
+	}
 
-	void Start () {
-
+	void OnCollisionExit2D (Collision2D col)
+	{
+		if(col.gameObject.tag == "Ground")
+		{
+			playerOnTheGround = false;
+			Debug.Log ("Pelaaja ei osu maahan!");
+		}
 	}
 	
+	void Start()
+	{
+		
+	}
 	
 	void Update ()
 	{
+
 		if (!CanJump)
 			JumpTime  -= Time.deltaTime;
 		if (JumpTime <= 0)
@@ -26,13 +45,19 @@ public class PlayerMovement : MonoBehaviour {
 			JumpTime  = MaxJumpTime;
 		}
 
+		if(Input.GetKeyDown(KeyCode.R))
+		{
+			Application.LoadLevel(Application.loadedLevel);
+		}
+
 	}
-	
+
 	void FixedUpdate () {
 		move = Input.GetAxis ("Horizontal");
 		GetComponent<Rigidbody2D>().velocity = new Vector2 (move * Speed, GetComponent<Rigidbody2D>().velocity.y);
 
-		if (Input.GetKeyDown (KeyCode.Space) && CanJump) {
+		if (((Input.GetKeyDown (KeyCode.Space)) || (Input.GetKeyDown (KeyCode.W))) && CanJump && playerOnTheGround)
+		{
 			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (GetComponent<Rigidbody2D> ().velocity.x, JumpForce));
 
 			CanJump = false;
@@ -41,15 +66,19 @@ public class PlayerMovement : MonoBehaviour {
 
 		float checkDirection = Mathf.Sign(GetComponent<Rigidbody2D> ().velocity.x);
 
-		if (Input.GetKeyDown (KeyCode.A) && checkDirection == -1)
+		if (Input.GetKey (KeyCode.A) && checkDirection == -1)
 		{
-			transform.Rotate (Vector3.up * -180 * checkDirection);
+			transform.localRotation = Quaternion.Euler(0, 180, 0);
+		
+			//transform.Rotate (Vector3.up * -180 * checkDirection);
 			Debug.Log(checkDirection);
 		}
 
-		if (Input.GetKeyDown (KeyCode.D) && checkDirection == 1)
+		if (Input.GetKey (KeyCode.D) && checkDirection == 1)
 		{
-			transform.Rotate (Vector3.up * -180 * checkDirection);
+			transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+			//transform.Rotate (Vector3.up * -180 * checkDirection);
 			Debug.Log(checkDirection);
 		}
 	
