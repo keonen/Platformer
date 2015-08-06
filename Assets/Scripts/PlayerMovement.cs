@@ -30,13 +30,13 @@ public class PlayerMovement : MonoBehaviour {
 			//Debug.Log ("Pelaaja ei osu maahan!");
 		}
 	}
-	
+
+		
 	void Start()
 	{
 		// Get the Animator component from your gameObject
 		anim = GetComponent<Animator>();
 
-		//Physics2D.IgnoreCollision(wall.GetComponent<Collider>(), GetComponent<Collider>());
 
 	}
 	
@@ -102,6 +102,11 @@ public class PlayerMovement : MonoBehaviour {
 
 			//transform.Rotate (Vector3.up * -180 * checkDirection);
 			//Debug.Log(checkDirection);
+		}
+
+		if (Input.GetKeyDown (KeyCode.C))
+		{
+
 		}
 	
 	}
