@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour {
 		// Get the Animator component from your gameObject
 		anim = GetComponent<Animator>();
 
+		//Physics2D.IgnoreCollision(wall.GetComponent<Collider>(), GetComponent<Collider>());
+
 	}
 	
 	void Update ()
@@ -54,10 +56,20 @@ public class PlayerMovement : MonoBehaviour {
 			Application.LoadLevel(Application.loadedLevel);
 		}
 
+		if(Input.GetKeyDown(KeyCode.E))
+		{
+			anim.SetBool ("isWaving", true);
+		}
+
+		if(Input.GetKeyUp(KeyCode.E))
+		{
+			anim.SetBool ("isWaving", false);
+		}
+
 		playerVelocity = Mathf.Abs(GetComponent<Rigidbody2D> ().velocity.x);
 
 		// Sets the value
-		anim.SetFloat ("velocity", playerVelocity);
+		anim.SetFloat ("speed", playerVelocity);
 
 
 	}
