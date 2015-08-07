@@ -1,8 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerMovement.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\Users\Opiframe 6\Documents\CubeABC\Assets\Scripts\BazookaAimCursor.cs">
     <Files>
-      <File FileName="Assets\Scripts\PlayerMovement.cs" Line="14" Column="23" />
+      <File FileName="..\..\Users\Opiframe 6\Documents\CubeABC\Assets\Scripts\BazookaAimCursor.cs" Line="48" Column="23" />
+      <File FileName="..\..\Users\Opiframe 6\Documents\CubeABC\Assets\MyScripts\MousePointer.cs" Line="1" Column="1" />
+      <File FileName="..\..\Users\Opiframe 6\Documents\CubeABC\Assets\MyScripts\HotKeys.cs" Line="108" Column="3" />
+      <File FileName="..\..\Users\Opiframe 6\Documents\CubeABC\Assets\Scripts\Bazooka.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
