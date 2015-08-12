@@ -10,13 +10,16 @@ public class PlayerMovement : MonoBehaviour {
 	public float JumpTime = 0f;
 	public float playerVelocity;
 	private bool CanJump;
-	private bool playerOnTheGround;
+	public bool playerOnTheGround;
 	public Animator anim;
 	public bool canClimb = false;
+	public bool playerIsClimbing = false;
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Ladder") {
 			canClimb = true;
+			playerIsClimbing = true;
+			anim.SetBool ("isClimbing", true);
 			GetComponent<Rigidbody2D>().gravityScale = 0;
 			GetComponent<Rigidbody2D>().velocity = new Vector2 (GetComponent<Rigidbody2D>().velocity.x, -0.01f);
 			Debug.Log("Laddder trigger -> canClimb true.");
@@ -26,8 +29,17 @@ public class PlayerMovement : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.tag == "Ladder") {
 			canClimb = false;
+			playerIsClimbing = false;
 			GetComponent<Rigidbody2D>().gravityScale = 1;
 			Debug.Log("Laddder trigger -> canClimb false.");
+		}
+	}
+
+	void OnTriggerStay2D(Collider2D other) {
+		if (other.tag == "Ladder") {
+			canClimb = true;
+			GetComponent<Rigidbody2D>().gravityScale = 0;
+			playerIsClimbing = true;
 		}
 	}
 
@@ -69,6 +81,39 @@ public class PlayerMovement : MonoBehaviour {
 			JumpTime  = MaxJumpTime;
 		}
 
+		if (playerOnTheGround)
+		{
+			anim.speed = 1;
+		}
+
+		if (!playerOnTheGround)
+		{
+			anim.speed = 2;
+		}
+
+		if (!playerIsClimbing)
+		{
+			anim.SetBool ("isClimbing", false);
+		}
+
+//		if (!CanJump && !playerOnTheGround && !playerIsClimbing)
+//		{
+//			anim.SetBool ("isOnAir", true);
+//		}
+//		else
+//		{
+//			anim.SetBool ("isOnAir", false);
+//		}
+
+		if (GetComponent<Rigidbody2D>().velocity.y < -0.3)
+		{
+			anim.SetBool ("isFalling", true);
+		}
+		if (GetComponent<Rigidbody2D>().velocity.y > -0.3)
+		{
+			anim.SetBool ("isFalling", false);
+		}
+
 		if(Input.GetKeyDown(KeyCode.R))
 		{
 			Application.LoadLevel(Application.loadedLevel);
@@ -92,30 +137,30 @@ public class PlayerMovement : MonoBehaviour {
 				GetComponent<Rigidbody2D>().velocity = new Vector2 (0f, 2f);
 			}
 		}
-		if (Input.GetKeyUp(KeyCode.W))
-		{
-				anim.SetBool ("isClimbing", false);
-				GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-		}
 
 		if (Input.GetKey(KeyCode.S))
 		{
-			if (canClimb)
+			if (canClimb && !playerOnTheGround)
 			{
 				anim.SetBool ("isClimbing", true);
 				GetComponent<Rigidbody2D>().velocity = new Vector2 (0f, -2f);
 			}
 		}
-		if (Input.GetKeyUp(KeyCode.S))
+
+		if ((Input.anyKey == false) && playerIsClimbing)
 		{
-			GetComponent<Rigidbody2D>().velocity = new Vector2 (0f, 0f);
-			anim.SetBool ("isClimbing", false);
+			GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		}
 
 		playerVelocity = Mathf.Abs(GetComponent<Rigidbody2D> ().velocity.x);
 
 		// Sets the value
 		anim.SetFloat ("speed", playerVelocity);
+
+		if (playerIsClimbing && GetComponent<Rigidbody2D> ().velocity.x == 0)
+		{
+			anim.speed = Mathf.Abs(GetComponent<Rigidbody2D> ().velocity.y);
+		}
 
 
 	}
@@ -140,7 +185,7 @@ public class PlayerMovement : MonoBehaviour {
 		
 			//transform.Rotate (Vector3.up * -180 * checkDirection);
 			//Debug.Log(checkDirection);
-			anim.SetBool ("isClimbing", false);
+			//anim.SetBool ("isClimbing", false);
 		}
 
 		if (Input.GetKey (KeyCode.D) && checkDirection == 1)
@@ -149,9 +194,8 @@ public class PlayerMovement : MonoBehaviour {
 
 			//transform.Rotate (Vector3.up * -180 * checkDirection);
 			//Debug.Log(checkDirection);
-			anim.SetBool ("isClimbing", false);
+			//anim.SetBool ("isClimbing", false);
 		}
 
-	
 	}
 }
