@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour {
 	public Animator anim;
 	public bool canClimb = false;
 	public bool playerIsClimbing = false;
+	public AudioSource walkingSound;
+	public AudioSource jumpingSound;
+	public bool walkingSoundPlaying = false;
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Ladder") {
@@ -31,6 +34,9 @@ public class PlayerMovement : MonoBehaviour {
 			canClimb = false;
 			playerIsClimbing = false;
 			GetComponent<Rigidbody2D>().gravityScale = 1;
+			anim.speed = 1;
+			anim.SetBool ("isClimbing", false);
+			GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 			Debug.Log("Laddder trigger -> canClimb false.");
 		}
 	}
@@ -66,12 +72,25 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		// Get the Animator component from your gameObject
 		anim = GetComponent<Animator>();
-
-
 	}
 	
+	//protected override void Update ()
 	void Update ()
 	{
+		//base.Update ();
+
+
+		if (playerOnTheGround && GetComponent<Rigidbody2D>().velocity.x != 0 && !walkingSoundPlaying)
+		{
+			walkingSoundPlaying = true;
+			walkingSound.Play();
+		}
+
+		if (!playerOnTheGround || Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) < 0.1)
+		{
+			walkingSoundPlaying = false;
+			walkingSound.Stop();
+		}
 
 		if (!CanJump)
 			JumpTime  -= Time.deltaTime;
@@ -169,12 +188,13 @@ public class PlayerMovement : MonoBehaviour {
 		move = Input.GetAxis ("Horizontal");
 		GetComponent<Rigidbody2D>().velocity = new Vector2 (move * Speed, GetComponent<Rigidbody2D>().velocity.y);
 
-		if (Input.GetKeyDown (KeyCode.Space) && CanJump && playerOnTheGround)
+		if (Input.GetKey(KeyCode.Space) && CanJump && playerOnTheGround)
 		{
 			GetComponent<Rigidbody2D> ().AddForce (new Vector2 (GetComponent<Rigidbody2D> ().velocity.x, JumpForce));
 
 			CanJump = false;
 			JumpTime = MaxJumpTime;
+			jumpingSound.Play();
 		}
 
 		float checkDirection = Mathf.Sign(GetComponent<Rigidbody2D> ().velocity.x);
@@ -197,5 +217,8 @@ public class PlayerMovement : MonoBehaviour {
 			//anim.SetBool ("isClimbing", false);
 		}
 
+
 	}
+	
+
 }

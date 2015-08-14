@@ -46,10 +46,17 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\FollowingCamera.cs" />
      <Compile Include="Assets\Scripts\FollowingObject.cs" />
+     <Compile Include="Assets\Scripts\GravityField.cs" />
+     <Compile Include="Assets\Scripts\GravityFieldIndependent.cs" />
+     <Compile Include="Assets\Scripts\Ladder.cs" />
+     <Compile Include="Assets\Scripts\NormalWalker.cs" />
+     <Compile Include="Assets\Scripts\ObjectController.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\PlayerMovementTesting.cs" />
      <Compile Include="Assets\Scripts\PlayerStateMachine.cs" />
+     <Compile Include="Assets\Scripts\SpaceManController.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
